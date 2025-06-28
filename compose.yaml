@@ -1,0 +1,23 @@
+﻿version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: Room_Reservation_Postgresql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 13ssss13
+      POSTGRES_DB: reserve_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - reserve_network  
+
+volumes:
+  postgres_data:  
+
+networks:
+  reserve_network:  
+    driver: bridge
