@@ -133,3 +133,4 @@ C:\Users\pizda\RiderProjects\NewRoomReservation\NewRoomReservation\obj\Debug\net
 C:\Users\pizda\RiderProjects\NewRoomReservation\NewRoomReservation\obj\Debug\net8.0\NewRoomReservation.pdb
 C:\Users\pizda\RiderProjects\NewRoomReservation\NewRoomReservation\obj\Debug\net8.0\NewRoomReservation.genruntimeconfig.cache
 C:\Users\pizda\RiderProjects\NewRoomReservation\NewRoomReservation\obj\Debug\net8.0\ref\NewRoomReservation.dll
+C:\Users\pizda\RiderProjects\NewRoomReservation\NewRoomReservation\obj\Debug\net8.0\NewRoomReservation.sourcelink.json
