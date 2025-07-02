@@ -23,14 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Application Services\" />
-      <Folder Include="Controllers\" />
-      <Folder Include="Domain\" />
-      <Folder Include="Entities\" />
-      <Folder Include="Repositories\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>

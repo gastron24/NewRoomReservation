@@ -11,12 +11,6 @@ public class HostelDb : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Room> Rooms { get; set; }
     public DbSet<AdminUser> AdminUsers { get; set; }
-    
-
-
-
-
-
-
-
+    public DbSet<Complaint> Complaints { get; set; }
+    public DbSet<ServiceOrder> ServiceOrders { get; set; } 
 }
