@@ -62,17 +62,19 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("complaint")]
-    public async Task<IActionResult> PushComplaint([FromBody] string text, int userId)
+    public async Task<IActionResult> PushComplaint([FromBody] ComplaintDto dto)
     {
-        var user = await _db.Users.FindAsync(userId);
-
+        if(dto == null || string.IsNullOrWhiteSpace(dto.Text))
+            return BadRequest("Текст не может быть пустым");
+        
+        var user = await _db.Users.FindAsync(dto.UserId);
         if (user == null)
             return NotFound("Пользователь не найден");
 
         var complaint = new Complaint()
         {
-            Text = text,
-            UserID = userId
+            Text = dto.Text,
+            UserID = dto.UserId,
         };
         _db.Complaints.Add(complaint);
         await _db.SaveChangesAsync();
