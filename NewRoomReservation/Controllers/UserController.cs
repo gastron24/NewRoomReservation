@@ -29,7 +29,7 @@ public class UserController : ControllerBase
         if (user.Balance < room.Price)
             return BadRequest("Бомж пошел на**й отсюда");
 
-        user.RoomHeLives = room.Id;
+        user.RoomId = room.Id;
         user.Room = room;
 
         await _db.SaveChangesAsync();
@@ -52,7 +52,7 @@ public class UserController : ControllerBase
         if (user.Balance < room.Price)
             return BadRequest("Деньга нет, положи потом общатсья будем");
 
-        user.RoomHeLives = room.Id;
+        user.RoomId = room.Id;
         user.Room = room;
         await _db.SaveChangesAsync();
 
@@ -82,22 +82,22 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("order-service")]
-    public async Task<IActionResult> OrderService(string serviceName, decimal coast, int userId)
+    public async Task<IActionResult> OrderService([FromBody] OrderServiceDto orderDto)
     {
-        var user = await _db.Users.FindAsync(userId);
+        var user = await _db.Users.FindAsync(orderDto.UserId);
         if (user == null)
             return NotFound("Пользователь не найден");
         
-        if (user.Balance < coast)
+        if (user.Balance < orderDto.Coast)
             return BadRequest("Недостаточно средств");
 
-        user.Balance -= coast;
+        user.Balance -= orderDto.Coast;
 
         var order = new ServiceOrder()
         {
-            ServiceName = serviceName,
-            Coast = coast,
-            UserId = userId
+            ServiceName = orderDto.ServiceName,
+            Coast =  orderDto.Coast,
+            UserId = orderDto.UserId,
         };
 
         _db.ServiceOrders.Add(order);

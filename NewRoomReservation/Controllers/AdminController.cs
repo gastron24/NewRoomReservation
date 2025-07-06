@@ -48,7 +48,7 @@ public class AdminController : ControllerBase
         _user.UserName = editUser.UserName; 
         _user.IsBanned = editUser.IsBanned;
         _user.IsAdmin = editUser.IsAdmin;
-        _user.RoomHeLives = editUser.RoomHeLives;
+        _user.RoomId = editUser.RoomId;
         _user.Balance = editUser.Balance;
 
         await _db.SaveChangesAsync();
@@ -112,17 +112,16 @@ public class AdminController : ControllerBase
             return BadRequest("Нет прав администратора");
 
         var room = await _db.Rooms
-            .Include(r => r.OccupiedByUser)
+            .Include(r => r.Id)
             .FirstOrDefaultAsync(r => r.Id == id);
 
         if (room == null)
             return NotFound("Комната не найдена");
       
-        if (room.OccupiedByUser == null)
+        if (room.Users == null)
             return BadRequest("В комнате никто не проживает");
         
-        room.OccupiedUserId = null;
-        room.OccupiedByUser = null;
+        room.Users = null;
         room.IsAviable = true;
 
         await _db.SaveChangesAsync();

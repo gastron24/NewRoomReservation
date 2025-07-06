@@ -17,11 +17,10 @@ public class HostelDb : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Room>()
-            .HasOne(r => r.OccupiedByUser)
-            .WithMany()
-            .HasForeignKey(k => k.Id)
-            .OnDelete(DeleteBehavior.Cascade);
-        
+            .HasMany(r => r.Users)            
+            .WithOne(u => u.Room)              
+            .HasForeignKey(u => u.RoomId);     
+
         base.OnModelCreating(modelBuilder);
     }
 }
