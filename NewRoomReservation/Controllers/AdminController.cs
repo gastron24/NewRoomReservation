@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,17 +25,21 @@ public class AdminController : ControllerBase
             throw new Exception("У вас нету прав администратора."); // проверка на админа => нет прав пошел НАХ. 
         }                                                           // + вопрос (можно ли создавать такие проверки
     }                                                               //            в конструкторе)
-    
+   
+    [Authorize(Roles = "Admin")]
     [HttpGet]
-    public IActionResult GetAllUser()
+    public async Task<IActionResult> GetAllUser(int userId)
     {
-        if (_adminUser.IsAdmin == false)
-            return BadRequest("У вас нет прав администратора.");
-        
-        var alluser = _db.Users.ToListAsync();
-            return Ok(alluser);
-    }
+        var user = await _db.Users.FindAsync(userId);
 
+        if (user == null || !user.IsAdmin)
+            return BadRequest("У вас нет прав администратора.");
+
+        var users = await _db.Users.ToListAsync();
+
+        return Ok(users);
+    }
+    [Authorize(Roles = "Admin")]
     [HttpPut("edit-user/{id}")]
     public async Task<IActionResult> EditUser(int id, [FromBody] User editUser)
     {
@@ -55,6 +60,7 @@ public class AdminController : ControllerBase
         return Ok("Информация о Пользователе обновлена");
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("ban-user/{id}")]
     public async Task<IActionResult> BanUser(int id, [FromBody] User banedUser)
     {
@@ -70,6 +76,7 @@ public class AdminController : ControllerBase
         return Ok("ПОльзователь заблокирован");
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("delete-user/{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
@@ -86,6 +93,7 @@ public class AdminController : ControllerBase
 
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("edit-room/{id}")]
     public async Task<IActionResult> EditRoom(int id, [FromBody] Room updRoom)
     {
@@ -105,6 +113,7 @@ public class AdminController : ControllerBase
          return Ok("Комната обновлена");
     }
     
+    [Authorize(Roles = "Admin")]
     [HttpPost("room/{id}/leaveUser")]
     public async Task<IActionResult> EvictUserFromRoom(int id)
     {
@@ -129,6 +138,7 @@ public class AdminController : ControllerBase
         return Ok("Пользователь успешно выселен из общаги");
     }
    
+    [Authorize(Roles = "Admin")]
     [HttpPost("room/{id}/make-available")]
     public async Task<IActionResult> MakeRoomAvailable(int id)
     {
@@ -145,7 +155,10 @@ public class AdminController : ControllerBase
         return Ok("Комната доступна");
     }
     
+    [Authorize(Roles = "Admin")]
     [HttpPost("room/{id}/make-unavailable")]
+    
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> MakeRoomUnavailable(int id)
     {
         if (!_adminUser.IsAdmin)
