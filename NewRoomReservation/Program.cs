@@ -14,7 +14,8 @@ builder.Services.AddControllers()
         opt.JsonSerializerOptions.PropertyNamingPolicy = null;
     });
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
 
 
@@ -29,6 +30,7 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.UseHttpsRedirection();
 app.Run();
+
 
 using (var scope = app.Services.CreateScope())
 {
