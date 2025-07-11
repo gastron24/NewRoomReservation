@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NewRoomReservation.Models;
+using NewRoomReservation.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddControllers()
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 
 
@@ -36,17 +39,4 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<NewRoomReservation.Infrastructure.HostelDb>();
 
-    if (await db.Users.FindAsync(1) == null)
-    {
-        await db.Users.AddAsync(new User
-        {
-           Id = 1,
-           UserName = "Алеша",
-           Balance = 500,
-           Password = "123456",
-           IsAdmin = false,
-           IsBanned = false,
-        });
-        await db.SaveChangesAsync();
-    }
 }

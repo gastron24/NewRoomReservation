@@ -34,7 +34,7 @@ public class UserController : ControllerBase
 
         return Ok("Комната успешно изменена");
     }
-
+    
     [HttpPost("complaint")]
     public async Task<IActionResult> PushComplaint([FromBody] ComplaintDto dto)
     {
