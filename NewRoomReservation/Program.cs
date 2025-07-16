@@ -15,8 +15,6 @@ builder.Services.AddControllers()
         opt.JsonSerializerOptions.PropertyNamingPolicy = null;
     });
 builder.Services.AddSwaggerGen();
-builder.Services.AddAuthentication();
-builder.Services.AddAuthorization();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 
